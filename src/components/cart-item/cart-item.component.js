@@ -1,17 +1,13 @@
 import React, {useState,useContext} from "react";
 import {View, Text, Image, TouchableOpacity} from "react-native";
+import { useDispatch } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
 import styled from "styled-components/native";
-import { CartContext } from "../../services/cart/cart.context";
+import { cartActions } from "../../store/cartSlice";
 
 export const CartItem = ({item}) => {
-    const {deleteItem, productList, updateProduct} = useContext(CartContext);
     const [itemAmount, setItemAmount] = useState(item.amount);
-    
-    const deleteTest = () => {
-      const sliced = productList(0,1);
-      console.log(sliced);
-    }
+    const dispatch = useDispatch();
 
     return(
         <>
@@ -23,20 +19,20 @@ export const CartItem = ({item}) => {
               {item.title} ({item.color}, {item.size})
             </Title>
             <AmountWrapper>
-              <TouchableOpacity onPress={() => updateProduct(item.amount, item.key, item.size, item.color, "add")}>
+              <TouchableOpacity onPress={() => dispatch(cartActions.addAmmount(item))}>
                 <Text style={{ fontSize: 24, marginRight: 10 }}>+</Text>
               </TouchableOpacity>
               <AmountTextWrapper>
                 <Text style={{ fontSize: 24 }}>{item.amount}</Text>
               </AmountTextWrapper>
-              <TouchableOpacity onPress={() => {item.amount > 1 && updateProduct(item.amount, item.key, item.size, item.color,"substract")}}>
+              <TouchableOpacity onPress={() => dispatch(cartActions.restAmmount(item))}>
                 <Text style={{ fontSize: 24, marginLeft: 10 }}>—</Text>
               </TouchableOpacity>
             </AmountWrapper>
           </View>
           <View style={{marginLeft: 'auto', flexDirection: 'column'}}>
             <TouchableOpacity style={{alignItems: 'center', marginTop: 20}}
-            onPress={() => deleteItem(item)}>
+            onPress={() => dispatch(cartActions.deleteItemFromCart(item))}>
             <AntDesign name="delete" size={24}/>
             </TouchableOpacity>
             <Text style={{marginTop: 'auto', marginRight: 10, fontWeight: "bold"}}>${item.price}</Text>

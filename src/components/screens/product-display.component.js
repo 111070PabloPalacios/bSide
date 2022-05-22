@@ -1,11 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch} from "react-redux";
 import { View, Text, Dimensions, FlatList, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { ScrollView } from "react-native-gesture-handler";
 import styled from "styled-components/native";
-import { RemerasContext } from "../../services/remeras/remeras.context";
 import { Carrousel } from "../carrousel/carrousel.component";
 import { ItemCard } from "../card/card.component";
+import { remerasActions, extractRemerasData, searchRemeras,REMERAS } from "../../store/remerasSlice";
 const { width, height } = Dimensions.get("screen");
 const imageW = width * 1;
 const imageH = imageW * 0.54;
@@ -15,13 +14,20 @@ const carrouselData = ["https://techcrunch.com/wp-content/uploads/2015/04/codeco
 "https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=1390&crop=1"
 ];
 
+let FIRST_EXEC = false;
+
 export const ProductDisplay = ({navigation}) => {
-  const { remeras } = useContext(RemerasContext);
-  const [people, setPeople] = useState([
-    { name: "shaun", id: 1 },
-    { name: "yoshi", id: 2 },
-    { name: "susan", id: 3 },
-  ]);
+  const remeras = useSelector(state => state.remeras.items);
+  const text = useSelector(state => state.messages.notifications.text);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    remeras.length = 0;
+    if(!FIRST_EXEC){
+      dispatch(extractRemerasData());
+    }
+    FIRST_EXEC = true;
+  },[]);
 
   const header = (
     <>

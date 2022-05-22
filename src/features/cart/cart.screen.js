@@ -1,21 +1,22 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { FlatList } from "react-native-gesture-handler";
-import { CartContext } from "../../services/cart/cart.context";
+import { View, Text } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+import styled from "styled-components/native";
 import { GoBackHeader } from "../../components/goBack/go-back.component";
 import { CartItem } from "../../components/cart-item/cart-item.component";
 import { Button } from "../../components/mainButton/button.component";
-import { View, Text, Image, TouchableOpacity } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import styled from "styled-components/native";
+import { cartActions } from "../../store/cartSlice";
 
 export const CartScreen = ({route}) => {
-  const { productList, handleTotal } = useContext(CartContext);
+  const cartItems = useSelector(items => items.cart.cartItems);
 
   return (
     <>
-      {productList.length > 0 ?  (
+      {cartItems.length > 0 ?  (
       <>
-      <FlatList data={productList}
+      <FlatList data={cartItems}
         renderItem={({ item }) => (
         <CartItem item={item}/>)}
         extraData={productList}

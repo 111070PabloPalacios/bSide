@@ -22,7 +22,6 @@ firebase.firestore().collection('remeras')
 .then((querySnapshot) => {
   querySnapshot.forEach((element) => {
     var data = element.data();
-    //console.log(data);
     array((arr) => [...arr, data]);
   });
   });

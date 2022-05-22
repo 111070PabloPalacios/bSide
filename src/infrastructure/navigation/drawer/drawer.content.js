@@ -8,6 +8,7 @@ import { useNavigation, useRoute} from "@react-navigation/native";
 import styled from "styled-components/native";
 import { DrawerSubMenu } from "./drawer-submenu.component";
 import { HomeScreen } from "../../../components/screens/home.screen";
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const ItemParameters = {
   fontFamily: "Oswald_400Regular",
@@ -43,21 +44,23 @@ export const DrawerContent = (props) => {
             inactiveTintColor="white"
             labelStyle={ItemParameters}
             onPress={() => handleNavigation("Home")}
+            icon={() => <FontAwesome5 name="home" size={20} style={{color:'white'}}/>}
           />
           <DrawerItem
             label="QUIENES SOMOS"
             inactiveTintColor="white"
             labelStyle={ItemParameters}
             onPress={() => handleNavigation("Quienes Somos")}
+            icon={() => <MaterialCommunityIcons name="account-question" size={20} style={{color:'white'}}/>}
           />
           <DrawerItem
             label="¿COMO COMPRAR?"
             inactiveTintColor="white"
             labelStyle={ItemParameters}
-            onPress={() => console.log("¿Como Comprar")}
+            onPress={() => handleNavigation("Como Comprar")}
+            icon={() => <FontAwesome5 name="money-bill-wave" size={20} style={{color:'white'}}/>}
           />
           <DrawerSubMenu title="PRODUCTOS" items={firstItemDrawerContent}/>
-          <DrawerSubMenu title="+INFO" items={secondItemDrawer}/>
           <DrawerItem
             label="PRENSA"
             inactiveTintColor="white"

@@ -1,13 +1,12 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StatusBar } from "react-native";
+import { useSelector ,useDispatch } from "react-redux";
+import { remerasActions, sendCartData } from "../../store/remerasSlice";
 import { useNavigation } from "@react-navigation/native";
 import { Searchbar } from "react-native-paper";
 import { DrawerActions} from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
-import { SearchResultScreen } from "../screens/searchResults.screen";
 import styled from "styled-components/native";
-import { CartContext } from "../../services/cart/cart.context";
-import { RemerasContext } from "../../services/remeras/remeras.context";
 import { Ionicons } from "@expo/vector-icons";
 //import SearchBar from "@pnap/react-native-search-bar";
 
@@ -15,20 +14,18 @@ const IMAGE_URL =
   "https://d3ugyf2ht6aenh.cloudfront.net/stores/019/792/themes/common/logo-653708850-1564683786-809f7e9e9f9b7cc192aebf84830e1bed1564683787-480-0.png?0";
 
 export const Header = () => {
-  const { productList } = useContext(CartContext);
-  const {search, setSearchResults} = useContext(RemerasContext);
-  const [query, setQuery] = useState(null);
+  const [query, setQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const cartAmount = useSelector(item => item.cart.cartItems)
 
-  const searchbarHandler = () => {
-    search(query);
+  const searchbarHandler = async () => {
+    setIsSearching(true);
     setQuery(null);
+    dispatch(sendCartData(query));
     navigation.navigate("SearchResult");
   }
-
-  useEffect(() => {
-    setQuery(null);
-  },[])
 
   return (
     <Wrapper>
@@ -43,7 +40,7 @@ export const Header = () => {
         onIconPress={() => searchbarHandler()} />
       </SearchBarWrapper>
       <TouchableOpacity style={{top: 10}} onPress={() => navigation.navigate("CartScreen")}>
-        <Items>{productList.length}</Items>
+        <Items>{cartAmount.length}</Items>
       <Entypo name="shopping-cart" size={30} />
       </TouchableOpacity>
     </Wrapper>

@@ -1,17 +1,21 @@
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import { View, Text, FlatList } from "react-native";
 import { Header } from "../header/header.component";
 import { useNavigation } from "@react-navigation/native";
 import { RemerasContext } from "../../services/remeras/remeras.context";
 import { ItemCard } from "../card/card.component";
 
-export const SearchResultScreen = ({param}) => {
+export const SearchResultScreen = ({ param }) => {
   const navigation = useNavigation();
-  const { searchResults } = useContext(RemerasContext);
+  //const { searchResults } = useContext(RemerasContext);
+  const searchData = useSelector((state) => state.remeras.searchResults);
+
+  console.log(searchData);
 
   const header = (
     <>
-    <Header/>
+      <Header />
       <View
         style={{
           alignItems: "center",
@@ -19,7 +23,7 @@ export const SearchResultScreen = ({param}) => {
           borderBottomWidth: 2,
           marginRight: 15,
           marginLeft: 15,
-          marginBottom: 10
+          marginBottom: 10,
         }}
       >
         <Text style={{ fontFamily: "Oswald_300Light", fontSize: 28 }}>
@@ -32,12 +36,12 @@ export const SearchResultScreen = ({param}) => {
   return (
     <View>
       <FlatList
-        data={searchResults}
+        data={searchData}
         renderItem={({ item, index }) => (
           <ItemCard itemArray={item} navigation={navigation} />
         )}
         keyExtractor={(item) => item.key}
-        key={searchResults.key}
+        key={searchData.key}
         numColumns={2}
         ListHeaderComponent={header}
       />

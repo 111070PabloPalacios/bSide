@@ -1,52 +1,41 @@
 import React, {useEffect, useState, useContext}from "react";
 import {View, Text, TouchableOpacity} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
 import { CartContext } from "../../services/cart/cart.context";
+import { cartActions } from "../../store/cartSlice";
 
 export const Selector = ({text, array}) => {
     const navigation = useNavigation();
     const [title, setTitle] = useState(null);
     const [selectedValue, setSelectedValue] = useState(null);
-    const { sizePosition ,setSize, setColor, setSizePosition, setColorPosition} = useContext(CartContext);
+    const color = useSelector(state => state.cart.color);
+    const dispatch = useDispatch();
     useEffect(() => {
         if(title === null){
             setTitle(text);
         };
 
-        if(text === "talles"){
-            setSize(array[0]);
-            handlePosition(array[0], setSizePosition);
+        if(text === "color"){
+            dispatch(cartActions.setColor(array[0])); 
+            dispatch(cartActions.setColorPosition({color: array[0], colorsArray: array}));
         }
         else{
-            setColor(array[0]);
-            handlePosition(array[0], setColorPosition);
+            dispatch(cartActions.setSize(array[0]));
         }
     },[]);
 
     const updateValue = (selectedItem) => {
-        setSelectedValue(selectedItem);
-
-        if(text === "talles"){
-            setSize(selectedItem);
-            handlePosition(selectedItem, setSizePosition);
+        if(text === "color"){
+            dispatch(cartActions.setColorPosition({colorsArray: array, color: selectedItem}));
+            dispatch(cartActions.setColor(selectedItem));
+            setSelectedValue(selectedItem);
         }
         else{
-            setColor(selectedItem);
-            handlePosition(selectedItem, setColorPosition);
-        }
-    };
-
-    //Funcion que toma como parametros el prom text y un setter. Basicamente dice que 
-    //si el text es igual al que se encuentra en cierta posicion del array, agarre la 
-    //posicion en la que esta.
-    const handlePosition = (item, setPosition) => {
-        for (let i = 0; i < array.length; i++) {
-            if(item === array[i]){
-                setPosition(i);
-                break;
-            }
+            dispatch(cartActions.setSize(selectedItem));
+            setSelectedValue(selectedItem);
         }
     };
 

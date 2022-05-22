@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 import { DrawerItem } from "@react-navigation/drawer";
 import { Drawer } from "react-native-paper";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { Easing } from "react-native-reanimated";
 import { SubmenuItem } from "./submenuItem.component";
 import styled from "styled-components/native";
@@ -24,8 +24,8 @@ export const DrawerSubMenu = (props) => {
   });
 
   const handleTouch = () => {
-    console.log('pressed')
-  }
+    console.log("pressed");
+  };
 
   useEffect(() => {
     rotateValueHolder.setValue(0);
@@ -55,26 +55,37 @@ export const DrawerSubMenu = (props) => {
         labelStyle={ItemParameters}
         onPress={() => itemDrawer(nestedItemDrawer, setNestedItemDrawer)}
         icon={({ color, size }) => (
-          <Animated.View
-            style={[styles.viewStyle, { transform: [{ rotate: rotateData }] }]}
-          >
-            <AntDesign
-              name="down"
-              size={20}
-              style={{
-                borderColor: "black",
-                borderWidth: 1,
-                padding: 1,
-              }}
-            />
-          </Animated.View>
+          <>
+            <FontAwesome5 
+              name="store-alt" size={20} style={{color: 'white'}}/>
+            <Animated.View
+              style={[
+                styles.viewStyle,
+                { transform: [{ rotate: rotateData }] },
+              ]}
+            >
+              <AntDesign
+                name="down"
+                size={20}
+                style={{
+                  borderColor: "white",
+                  borderWidth: 1,
+                  padding: 1,
+                  color: "white",
+                }}
+              />
+            </Animated.View>
+          </>
         )}
       />
       {nestedItemDrawer && (
         <SubMenuSection>
           {props.items.map((x, i) => (
-            <SubmenuItem title={x.title} labelStyle={ItemParameters}
-            index={i}/>
+            <SubmenuItem
+              title={x.title}
+              labelStyle={ItemParameters}
+              index={i}
+            />
           ))}
         </SubMenuSection>
       )}

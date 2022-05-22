@@ -4,6 +4,7 @@ import { DrawerContent } from "./drawer.content";
 import { HomeScreen } from "../../../components/screens/home.screen";
 import { QuienesSomos } from "../../../components/quienes-somos/quienes-somos.component";
 import { SearchResultScreen } from "../../../components/screens/searchResults.screen";
+import { ComoComprarScreen } from "../../../components/screens/comoComprar.screen";
 
 const Drawer = createDrawerNavigator();
 
@@ -19,6 +20,7 @@ export const DrawerNavigation = () => {
             <Drawer.Screen name="Home" component={HomeScreen}/>
             <Drawer.Screen name="Quienes Somos" component={QuienesSomos}/>
             <Drawer.Screen name="SearchResult" component={SearchResultScreen}/>
+            <Drawer.Screen name="Como Comprar" component={ComoComprarScreen}/>
           </Drawer.Navigator>
     );
 }

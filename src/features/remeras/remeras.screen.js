@@ -3,16 +3,14 @@ import {
   View,
   Text,
   Dimensions,
-  TouchableOpacity,
   ScrollView,
   StatusBar,
 } from "react-native";
-import { CartScreen } from "../cart/cart.screen";
+import { useDispatch, useSelector } from "react-redux";
 import { GoBackHeader } from "../../components/goBack/go-back.component";
 import { Carrousel } from "../../components/carrousel/carrousel.component";
 import { Selector } from "../../components/selector/selector.component";
 import { AmmountButton } from "../../components/ammount-button/ammount-button";
-import { CartContext } from "../../services/cart/cart.context";
 import {
   CarrouselWrapper,
   TextWrapper,
@@ -23,6 +21,7 @@ import {
   Ammount,
   AmmountTextWrapper,
 } from "./remeras-screen.styles";
+import { cartActions, cartSlice } from "../../store/cartSlice";
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "../../components/mainButton/button.component";
 const { width, height } = Dimensions.get("screen");
@@ -32,49 +31,31 @@ const imageH = imageW * 0.24;
 export const RemerasScreen = ({ route }) => {
   //const { width } = useWindowDimensions();
   const { itemArray } = route.params;
-  const {
-    color,
-    size,
-    colorPosition,
-    productList,
-    arrayHandler,
-    image,
-    setImage,
-    updateProduct
-  } = useContext(CartContext);
   const [amount, setAmount] = useState(1);
   const [amountComponent, setAmountComponent] = useState(null);
   const [cartOrder, setCartOrder] = useState([]);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const color = useSelector(state => state.cart.color);
+  const size = useSelector(state => state.cart.size);
+  const image = useSelector(state => state.cart.image);
 
   useEffect(() => {
-    for (let i = 0; i < itemArray.images.length; i++) {
-      if (colorPosition === itemArray.images.indexOf(itemArray.images[i])) {
-        setImage(itemArray.images[i]);
-        //arrayHandler(itemArray.key, image, itemArray.title, color, size, amount, itemArray.price);
-        break;
-      };}
+      dispatch(cartSlice.actions.getImage(itemArray.images));
     });
 
   const cartHandler = () => {
-
-    if(productList.length === 0){
-      arrayHandler(itemArray.key, image, itemArray.title, color, size, amount, itemArray.price);
+    const obj = {
+      key: itemArray.key,
+      image: image,
+      color: color,
+      price: itemArray.price,
+      sexo: itemArray.sexo,
+      size: size,
+      title: itemArray.title,
+      amount: amount
     }
-
-    if(productList.length > 0){
-      for (let i = 0; i < productList.length; i++) {
-        if(productList[i].key === itemArray.key && productList[i].size === size &&
-          productList[i].color === color){
-          updateProduct(amount, productList[i].key);
-          console.log('El color de lista es: ' + productList[i].color + 'y el color seleccionado es: ' + color)
-          break;
-        }else{
-          arrayHandler(itemArray.key, image, itemArray.title, color, size, amount, itemArray.price);
-        }
-      }
-    }
-
+    dispatch(cartActions.addItemToCart(obj));
     navigation.navigate("CartScreen");
     setAmount(1);
   };

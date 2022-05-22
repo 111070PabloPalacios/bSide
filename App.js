@@ -4,6 +4,7 @@ import { DrawerNavigation } from "./src/infrastructure/navigation/drawer/drawer.
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import thunk from "redux-thunk";
 import {
   useFonts as UseOswald,
   Oswald_400Regular,
@@ -28,6 +29,9 @@ import { SearchResultScreen } from "./src/components/screens/searchResults.scree
 import { ContactDataScreen } from "./src/components/screens/contact-data.screen";
 import { PaymentDataScreen } from "./src/components/screens/paymentData.screen";
 import { OrderMadeScreen } from "./src/components/screens/order-made.screen";
+import { Provider } from "react-redux";
+import { store } from "./src/store";
+
 //import {firestoreExport} from 'node-firestore-import-export';
 
 //fonts: oswald y gupter
@@ -70,6 +74,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      <Provider store={store}>
       <CartContextProvider>
       <RemerasContextProvider>
           <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -85,6 +90,7 @@ export default function App() {
           </Stack.Navigator>
         </RemerasContextProvider>
       </CartContextProvider>
+      </Provider>
     </NavigationContainer>
   );
 }
