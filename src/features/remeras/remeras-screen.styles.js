@@ -18,6 +18,14 @@ export const TextWrapper = styled.View`
     margin-left: 15px;
 `;
 
+export const ModalText = styled.Text`
+    font-family: Oswald_400Regular;
+    color: black;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 10px;
+`;
+
 export const Title = styled.Text`
     font-family: Oswald_400Regular;
     font-size: 28px;

@@ -4,14 +4,14 @@ import { View, Text, Dimensions, FlatList, TouchableOpacity } from "react-native
 import styled from "styled-components/native";
 import { Carrousel } from "../carrousel/carrousel.component";
 import { ItemCard } from "../card/card.component";
-import { remerasActions, extractRemerasData, searchRemeras,REMERAS } from "../../store/remerasSlice";
+import { extractRemerasData } from "../../store/remerasSlice";
 const { width, height } = Dimensions.get("screen");
 const imageW = width * 1;
 const imageH = imageW * 0.54;
 
-const carrouselData = ["https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=1390&crop=1", 
-"https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=1390&crop=1",
-"https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=1390&crop=1"
+const carrouselData = ["https://i.imgur.com/8v5f4nU.png", 
+"https://imgur.com/1yKILWF.png",
+"https://i.imgur.com/CH0jcDX.png"
 ];
 
 let FIRST_EXEC = false;
@@ -31,7 +31,7 @@ export const ProductDisplay = ({navigation}) => {
 
   const header = (
     <>
-    <View style={{flex: 1}}>
+    <View style={{marginBottom: 'auto'}}>
     <Carrousel data={carrouselData} he={imageH} wi={imageW} variant="cover"/>
     </View>
     <TextWrapper>
@@ -69,4 +69,5 @@ const TextWrapper = styled.View`
   border-bottom-width: 4px;
   margin-left: 10px;
   margin-right: 10px;
+  margin-bottom: 10px;
 `;

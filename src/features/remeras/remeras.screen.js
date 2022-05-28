@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import { AmmountButton } from "../../components/ammount-button/ammount-button";
 import {
   CarrouselWrapper,
   TextWrapper,
+  ModalText,
   Title,
   Price,
   AmmountSectionWrapper,
@@ -22,6 +23,7 @@ import {
   AmmountTextWrapper,
 } from "./remeras-screen.styles";
 import { cartActions, cartSlice } from "../../store/cartSlice";
+import { Overlay } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "../../components/mainButton/button.component";
 const { width, height } = Dimensions.get("screen");
@@ -29,16 +31,16 @@ const imageW = width * 0.3;
 const imageH = imageW * 0.24;
 
 export const RemerasScreen = ({ route }) => {
-  //const { width } = useWindowDimensions();
   const { itemArray } = route.params;
   const [amount, setAmount] = useState(1);
-  const [amountComponent, setAmountComponent] = useState(null);
+  const [modalState, setModalState] = useState(false);
   const [cartOrder, setCartOrder] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const color = useSelector(state => state.cart.color);
   const size = useSelector(state => state.cart.size);
   const image = useSelector(state => state.cart.image);
+  const isAuthenticated = useSelector(state => state.authentication.isAuthenticated);
 
   useEffect(() => {
       dispatch(cartSlice.actions.getImage(itemArray.images));
@@ -49,22 +51,35 @@ export const RemerasScreen = ({ route }) => {
       key: itemArray.key,
       image: image,
       color: color,
-      price: itemArray.price,
+      originalPrice: 2350,
+      price: itemArray.price * amount,
       sexo: itemArray.sexo,
       size: size,
       title: itemArray.title,
       amount: amount
     }
-    dispatch(cartActions.addItemToCart(obj));
-    navigation.navigate("CartScreen");
-    setAmount(1);
+    !isAuthenticated && setModalState(true)
+    if(isAuthenticated){
+      dispatch(cartActions.addItemToCart(obj));
+      dispatch(cartActions.getTotal(itemArray.price * amount));
+      navigation.navigate("CartScreen");
+      setAmount(1);
+    }
   };
+
+  const modalHandler = () => {
+    modalState === false ? setModalState(true) : setModalState(false); 
+  }
 
   return (
     <>
+    <GoBackHeader />
       <ScrollView>
         <StatusBar translucent={true} backgroundColor={"black"} />
-        <GoBackHeader />
+        {modalState &&  <Overlay>
+          <ModalText>Para comprar se debe iniciar sesion</ModalText>
+          <Button title="Cerrar" cartHandler={modalHandler} action="addToCart"/>
+        </Overlay>}
         <View style={{ flex: 1 }}>
           <CarrouselWrapper>
             <Carrousel data={itemArray.images} he={imageH} wi={imageW} />

@@ -29,6 +29,7 @@ import { SearchResultScreen } from "./src/components/screens/searchResults.scree
 import { ContactDataScreen } from "./src/components/screens/contact-data.screen";
 import { PaymentDataScreen } from "./src/components/screens/paymentData.screen";
 import { OrderMadeScreen } from "./src/components/screens/order-made.screen";
+import { RegistroExitosoScreen } from "./src/components/screens/registroExitoso.screen";
 import { Provider } from "react-redux";
 import { store } from "./src/store";
 
@@ -79,14 +80,13 @@ export default function App() {
       <RemerasContextProvider>
           <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="home" component={DrawerNavigation}/>
-            <Stack.Screen name="HomeScreen" component={HomeScreen}/>
             <Stack.Screen name="RemerasScreen" component={RemerasScreen}/>
             <Stack.Screen name="OptionsScreen" component={OptionsScreen}/>
             <Stack.Screen name="CartScreen" component={CartScreen}/>
-            <Stack.Screen name="SearchResult" component={SearchResultScreen}/>
             <Stack.Screen name="ContactData" component={ContactDataScreen}/>
             <Stack.Screen name="PaymentData" component={PaymentDataScreen}/>
             <Stack.Screen name="OrderMade" component={OrderMadeScreen}/>
+            <Stack.Screen name="RegistroExitoso" component={RegistroExitosoScreen}/>
           </Stack.Navigator>
         </RemerasContextProvider>
       </CartContextProvider>

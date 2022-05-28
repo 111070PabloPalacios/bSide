@@ -5,13 +5,15 @@ import styled from 'styled-components/native';
 export const ItemCard = ({itemArray, navigation}) => {
 
     return(
-        <TouchableOpacity style={{ flex: 1, marginRight: 5,alignItems: 'center'}} 
+        <TouchableOpacity style={{ flex: 1, marginRight: 35,
+      marginLeft: 35, marginBottom: 18}} 
         onPress={() => navigation.navigate("RemerasScreen",{itemArray})}>
-                <View style={{flex: 1, alignItems: 'center'}}>
+                <View style={{alignItems: 'center'}}>
                 <ItemImage source={{uri: itemArray.images[0]}}/>
                 </View>
                 <TextWrapper>
-                <Title>{itemArray.title}</Title>
+                <Title numberOfLines={2}>{itemArray.title}</Title>
+                <Price>${itemArray.price}</Price>
               </TextWrapper>
             </TouchableOpacity>
     );
@@ -25,12 +27,17 @@ const ItemImage = styled(Image)`
 `;
 
 const TextWrapper = styled.View`
-  padding-bottom: 50px;
   align-items: center;
+  justify-content: flex-start;
 `;
 
 const Title = styled.Text`
   text-align: center;
-  position: absolute;
   font-family: Oswald_400Regular;
 `;
+
+const Price = styled.Text`
+  font-size:16px;
+  font-family: Oswald_700Bold;
+  color: #8cc63e;
+`

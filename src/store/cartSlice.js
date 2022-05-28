@@ -9,6 +9,7 @@ export const cartSlice = createSlice({
         size: null,
         image: null,
         cartItems: [],
+        totalPrice: 0,
         changed: false,
         itemToDelete: null
     },
@@ -23,6 +24,7 @@ export const cartSlice = createSlice({
                     key: newItem.key,
                     image: newItem.image,
                     color: newItem.color,
+                    originalPrice: newItem.price,
                     price: newItem.price,
                     sexo: newItem.sexo,
                     size: newItem.size,
@@ -31,6 +33,8 @@ export const cartSlice = createSlice({
                 })
             }else{
                 existingItem.amount = newItem.amount + existingItem.amount;
+                existingItem.price = existingItem.price + (newItem.amount * newItem.originalPrice);
+                console.log(existingItem.amount + newItem.amount * existingItem.originalPrice);
             }
         },
         deleteItemFromCart(state,action){
@@ -43,13 +47,20 @@ export const cartSlice = createSlice({
                     itemToDelete.color === array[i].color){
                     const filteredData = array.filter(item => item !== itemToDelete);
                     state.itemToDelete = array[i];
-                    console.log(state.itemToDelete);
+                    console.log(state.itemToDelete.price);
                     break;
                 }
             }
+            if(state.cartItems.length > 1){
+                state.totalPrice = state.totalPrice - state.itemToDelete.price;
+            }else{
+                state.totalPrice = 0;
+            }
             const filteredData = state.cartItems.filter(item => item !== state.itemToDelete);
             state.cartItems = filteredData;
-            console.log(state.cartItems);
+        },
+        emptyCart(state){
+            state.cartItems.length = 0;
         },
         setColorPosition(state, actions){
             const color = actions.payload["color"];
@@ -85,6 +96,9 @@ export const cartSlice = createSlice({
             if(existingItem){
                 const index = state.cartItems.indexOf(existingItem);
                 state.cartItems[index].amount = state.cartItems[index].amount + 1;
+                state.cartItems[index].price =  state.cartItems[index].amount * 2350;
+                state.totalPrice = state.totalPrice + 2350;
+                console.log(state.cartItems[index].price);
             }
         },
         restAmmount(state, action){
@@ -95,9 +109,15 @@ export const cartSlice = createSlice({
                 const index = state.cartItems.indexOf(existingItem);
                 if(state.cartItems[index].amount > 1){
                     state.cartItems[index].amount = state.cartItems[index].amount - 1;
+                    state.cartItems[index].price =  state.cartItems[index].amount * 2350;
+                    state.totalPrice = state.totalPrice - 2350;
                 } 
             }
         },
+        getTotal(state, action){
+            state.totalPrice = state.totalPrice + action.payload;
+            console.log(state.totalPrice);
+        }
     }
 });
 

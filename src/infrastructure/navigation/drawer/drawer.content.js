@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect} from "react";
-import { View, Text, StyleSheet, Animated } from "react-native";
+import React, {useEffect} from "react";
+import { View, StyleSheet } from "react-native";
 import { Drawer } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import { useFonts as UseOswald, Oswald_400Regular,
-} from "@expo-google-fonts/oswald";
+import { useFonts as UseOswald, Oswald_400Regular} from "@expo-google-fonts/oswald";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigation, useRoute} from "@react-navigation/native";
 import styled from "styled-components/native";
 import { DrawerSubMenu } from "./drawer-submenu.component";
-import { HomeScreen } from "../../../components/screens/home.screen";
+import { onLogout, getUserData } from "../../../store/authenticationSlice";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const ItemParameters = {
@@ -19,9 +19,8 @@ const ItemParameters = {
 export const DrawerContent = (props) => {
   const [oswaldLoaded] = UseOswald({ Oswald_400Regular });
 
-  const firstItemDrawerContent = [{title: "Ver todos los productos", navigateTo: "Productos"},
-                                  {title: "Hombre", navigateTo:"RopaHombre"},
-                                  {title:"Mujeres", navigateTo:"RopaMujer"}];
+  const firstItemDrawerContent = [{title: "Hombre", navigateTo:"RopaHombre"},
+                                  {title:"Mujer", navigateTo:"RopaMujer"}];
   const secondItemDrawer = [{title: "Preguntas Frecuentes", navigateTo: "PreguntasFrecuentes"}, 
                             {title: "Informacion y tabla de talles", navigateTo:"InformacionTabla"},
                             {title: "Politica de Cambios y devoluciones",navigateTo:"CambiosYDevoluciones"}, 
@@ -29,16 +28,20 @@ export const DrawerContent = (props) => {
                             {title: "Politicas de privacidad", navigateTo:"PoliticasDePrivacidad"}]
 
   const navigation = useNavigation();
-  const route = useRoute();
-  console.log(route.name);
   const handleNavigation = (navigationRoute) => {
       navigation.navigate(navigationRoute);
   }
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(state => state.authentication.isAuthenticated);
+  const user = useSelector(state => state.authentication.userData);
+
+  if(user){
+    console.log(user["nombre"]);
+  }
 
   return (
-    <View style={{ flex: 1 }}>
-      <DrawerContentScrollView {...props}>
-        <Drawer.Section style={styles.drawerSection}>
+    <>
+      <DrawerContentScrollView {...props} style={{flex: 1}}>
           <DrawerItem
             label="HOME"
             inactiveTintColor="white"
@@ -61,31 +64,32 @@ export const DrawerContent = (props) => {
             icon={() => <FontAwesome5 name="money-bill-wave" size={20} style={{color:'white'}}/>}
           />
           <DrawerSubMenu title="PRODUCTOS" items={firstItemDrawerContent}/>
-          <DrawerItem
-            label="PRENSA"
-            inactiveTintColor="white"
-            labelStyle={ItemParameters}
-            onPress={() => console.log("Prensa")}
-          />
-          <DrawerItem
-            label="CONTACTO"
-            inactiveTintColor="white"
-            labelStyle={ItemParameters}
-            onPress={() => console.log("Contacto")}
-          />
-        </Drawer.Section>
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
-        <Drawer.Item
-          label="Iniciar Sesion"
-          onPress={() => console.log("Iniciar Sesion")}
-        />
-        <Drawer.Item
-          label="Registrarse"
-          onPress={() => console.log("Registrarse")}
-        />
+      {!isAuthenticated ? (
+          <>
+            <Drawer.Item
+            label="Iniciar Sesion"
+            onPress={() => handleNavigation("Iniciar Sesion")}
+            />
+            <Drawer.Item
+            label="Registrarse"
+            onPress={() => handleNavigation("Registrarse")}
+            />
+          </>
+        ) : (
+            <>
+              <Drawer.Item
+              label={"Bienvenido/a " + user["nombre"] + "!"}
+              />
+              <Drawer.Item
+              label="Cerrar sesion"
+              onPress={() => dispatch(onLogout())}
+              />
+            </>
+        )}
       </Drawer.Section>
-    </View>
+    </>
   );
 };
 
@@ -105,12 +109,13 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   drawerSection: {
-    marginTop: 15,
+    marginBottom: 50,
+    borderBottomColor: "red",
     borderBottomWidth: 0,
   },
   bottomDrawerSection: {
-    flex: 0.2,
     marginBottom: 0,
+    paddingBottom: 1,
     borderTopColor: "#f4f4f4",
     borderTopWidth: 1,
     backgroundColor: "white",

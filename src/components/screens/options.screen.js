@@ -5,9 +5,10 @@ import { RadioButton } from "../radiobutton/radiobutton.component";
 import { GoBackHeader } from "../goBack/go-back.component";
 import styled from "styled-components/native";
 
-export const OptionsScreen = ({navigation, route}) => {
+export const OptionsScreen = ({route}) => {
     const [checked, setChecked] = useState(false);
     const [value, setValue] = useState(null);
+    const [capitalizedArray, setCapitalizedArray] = useState([]);
     const { text, itemArray, onPress} = route.params;
 
     const handleChecked = (itemName) => {
@@ -22,7 +23,7 @@ export const OptionsScreen = ({navigation, route}) => {
         {
             itemArray.map((x,i) => (
                 <RadioButtonWrapper key={"size-" + i}>
-                <RadioButton text={x} func={handleChecked} checked={checked} value={value}/>
+                <RadioButton key={i} text={x} func={handleChecked} checked={checked} value={value}/>
                 </RadioButtonWrapper>
             ))
         }

@@ -74,7 +74,7 @@ export const extractRemerasData = () => {
 export const sendCartData = (value) => {
     return async(dispatch) => {
         try{
-            if(value !== null){
+            if(value !== null && (value.toUpperCase() !== "HOMBRE" && value.toUpperCase() !== "MUJER")){
             REMERAS_BUSQUEDA.length = 0;
             await firebase.firestore().collection('remeras')
             .orderBy('title').startAt(value.toUpperCase())
@@ -87,6 +87,21 @@ export const sendCartData = (value) => {
             });
             dispatch(remerasActions.getSearchResults(REMERAS_BUSQUEDA));
             //console.log(REMERAS_BUSQUEDA);
+            }
+            else
+            if(value !== null && (value.toLowerCase() === "mujer" || value.toLowerCase() === "hombre")){
+                REMERAS_BUSQUEDA.length = 0;
+                console.log(value);
+            await firebase.firestore().collection('remeras')
+            .orderBy('sexo').startAt(value.toLowerCase())
+            .endAt(value.toLowerCase() + '\uf8ff').get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((element) => {
+                  const data = element.data();
+                  REMERAS_BUSQUEDA.push(data);
+                });
+            });
+            dispatch(remerasActions.getSearchResults(REMERAS_BUSQUEDA));
             }
             else{
                 return;

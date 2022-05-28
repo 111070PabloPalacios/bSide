@@ -1,25 +1,34 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { FlatList } from "react-native-gesture-handler";
 import { View, Text } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import { GoBackHeader } from "../../components/goBack/go-back.component";
 import { CartItem } from "../../components/cart-item/cart-item.component";
 import { Button } from "../../components/mainButton/button.component";
-import { cartActions } from "../../store/cartSlice";
 
 export const CartScreen = ({route}) => {
   const cartItems = useSelector(items => items.cart.cartItems);
+  const totalPrice = useSelector(items => items.cart.totalPrice)
+
+  const footer = (
+    <>
+    <View style={{marginLeft:15,marginRight: 15,flexDirection:'row'}}>
+      <Text style={{marginLeft: 10, fontWeight: "bold"}}>Total</Text>
+      <Text style={{marginLeft: 'auto', marginRight: 10, fontWeight: "bold"}}>${totalPrice}</Text>
+    </View>
+    </>
+  );
 
   return (
     <>
       {cartItems.length > 0 ?  (
       <>
       <FlatList data={cartItems}
+        ListFooterComponent={footer}
         renderItem={({ item }) => (
         <CartItem item={item}/>)}
-        extraData={productList}
+        extraData={cartItems}
         keyExtractor={(item) => item.key + '-' + item.size + '-' + item.color}
         ListHeaderComponent={<GoBackHeader />}/>
         <Button title="Iniciar Compra" action="goToData" goTo="ContactData"/>

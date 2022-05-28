@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { View, TouchableOpacity, Text, StatusBar} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
@@ -6,6 +6,14 @@ import styled from "styled-components/native";
 
 export const GoBackHeader = ({ text }) => {
   const navigation = useNavigation();
+  const [capitalize, setCapitalize] = useState(null);
+
+  useEffect(() => {
+    if(text){
+      const word = text.charAt(0).toUpperCase() + text.slice(1);
+      setCapitalize(word);
+    }
+  },[])
 
   return (
     <TopHeader>
@@ -14,7 +22,7 @@ export const GoBackHeader = ({ text }) => {
       </TouchableOpacity>
       {text && (
         <View style={{ marginLeft: 10 }}>
-          <Text style={{ color: "black" }}>{text}</Text>
+          <Text style={{ color: "black" }}>{capitalize}</Text>
         </View>
       )}
     </TopHeader>

@@ -12,8 +12,6 @@ const imageH = imageW * 0.54;
 
 export const Carrousel = ({data, he, wi, variant}) => {
 
-  console.log(he);
-
     const scrollX = useRef(new Animated.Value(0)).current;
     return(
       <CarrouselWrapper>
@@ -29,9 +27,8 @@ export const Carrousel = ({data, he, wi, variant}) => {
           renderItem={({item}) => {
             return (<>
             {variant === "cover" ? 
-            <View> 
-            <Cover source={{uri: item}} style={{height: he, width: wi}}/>
-          </View> :
+            <Cover source={{uri: item}} 
+            style={{resizeMode: "contain", alignSelf: 'center',height: he/1.5, width: wi}}/> :
           <CoverWrapper style={{width}}>
             <Cover source={{uri: item}} style={{flex: 0.5,height: 100, width: 250}}/>
           </CoverWrapper>

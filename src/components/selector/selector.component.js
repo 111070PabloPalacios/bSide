@@ -41,7 +41,7 @@ export const Selector = ({text, array}) => {
 
     return(
         <Wrapper onPress={() => 
-            navigation.navigate("OptionsScreen", {navigation, text: text, itemArray: array, onPress: updateValue})}>   
+            navigation.navigate("OptionsScreen", {text: text, itemArray: array, onPress: updateValue})}>   
             <Text style={{fontSize:20, color: 'black'}}>{text.toUpperCase()}:</Text>
             <Text style={{fontSize: 20, color: '#8cc63e'}}>{!selectedValue ? array[0] : selectedValue}</Text>
             <View style={{marginLeft: 'auto', marginTop: 'auto', marginBottom: 4}}>
@@ -61,5 +61,5 @@ export const Wrapper = styled(TouchableOpacity)`
     margin-bottom: 2px;
     height: 70px;
     border-color: gray;
-    border-width: 3px;
+    border-width: 1.5px;
 `;

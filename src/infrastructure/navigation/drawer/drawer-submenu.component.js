@@ -23,10 +23,6 @@ export const DrawerSubMenu = (props) => {
     outputRange: ["0deg", "90deg"],
   });
 
-  const handleTouch = () => {
-    console.log("pressed");
-  };
-
   useEffect(() => {
     rotateValueHolder.setValue(0);
     Animated.timing(rotateValueHolder, {
@@ -85,6 +81,7 @@ export const DrawerSubMenu = (props) => {
               title={x.title}
               labelStyle={ItemParameters}
               index={i}
+              key={i}
             />
           ))}
         </SubMenuSection>
@@ -96,6 +93,7 @@ export const DrawerSubMenu = (props) => {
 
 const SubMenuSection = styled(Drawer.Section)`
   background-color: #88ab59;
+
 `;
 
 const styles = StyleSheet.create({

@@ -1,10 +1,7 @@
 import React, { useState, useEffect} from "react";
 import { errores, validateForm } from "./contactData.errors";
-import {
-  View,
-  Text,
-  ScrollView,
-} from "react-native";
+import {View,Text,ScrollView,} from "react-native";
+import { useSelector } from "react-redux";
 import { Checkbox } from "react-native-paper";
 import { DropdownList } from "../dropdownList/dropdownlist.component";
 import { GoBackHeader } from "../goBack/go-back.component";
@@ -14,16 +11,15 @@ import styled from "styled-components/native";
 
 export const ContactDataScreen = () => {
   const paises = [
-    "Argentina",
-    "Argelia",
-    "Bolivia",
-    "Peru",
-    "Chile",
-    "Alemania",
-    "Carlos",
+    {label: 'Argentina', value: 'argentina'},
+    {label: 'Bolivia', value: 'bolivia'},
+    {label: 'Chile', value: 'chile'},
+    {label: 'Paraguay', value: 'paraguay'},
+    {label: 'Uruguay', value: 'uruguay'},
   ];
   const navigation = useNavigation();
   const [checked, setChecked] = useState(false);
+  const data = useSelector(state => state.authentication.userData)
   const [formValid, setFormValid] = useState(false);
   const [errorState, setErrorState] = useState((number) => ({errorState: number}));
   const [emailError, setEmailError] = useState(null);
@@ -37,7 +33,7 @@ export const ContactDataScreen = () => {
   const [ciudadError, setCiudadError] = useState(null);
   const [codigoPostalError, setCodigoPostalError] = useState(null);
   const [email, setEmail] = useState('');
-  const [nombre, setNombre] = useState('');
+  const [nombre, setNombre] = useState(data["nombre"]);
   const [apellido, setApellido]= useState('');
   const [telefono, setTelefono] = useState('');
   const [nombreRetira, setNombreRetira] = useState('');
@@ -54,26 +50,13 @@ export const ContactDataScreen = () => {
     setError && setError(null);
   }
 
-  /*const validateForm = (object, errorname,setError) => {
-    if(object.length === 0){
-        setErrorState(1);
-        for (let i = 0; i < errores.length; i++) {
-            if(errorname === errores[i].errorLabel){
-              setError(errores[i].error);
-              setErrorCounter(errorCounter + 1);
-                break;
-            }
-        }
-    }
-}*/
-
   useEffect(() => {
     errorState === 0 && navigation.navigate("PaymentData");
   },[errorState]);
 
   const formHandler = () => {
     setErrorState(0);
-    validateForm(email,"email",setEmailError,setErrorState);
+    //validateForm(email,"email",setEmailError,setErrorState);
     validateForm(nombre, "nombre",setNombreError,setErrorState);
     validateForm(apellido, "apellido",setApellidoError,setErrorState);
     validateForm(telefono, "telefono",setTelefonoError,setErrorState);
@@ -83,6 +66,7 @@ export const ContactDataScreen = () => {
     validateForm(numeroCalle, "numero",setNumeroCalleError,setErrorState);
     validateForm(ciudad, "ciudad",setCiudadError,setErrorState);
     validateForm(codigoPostal, "codigo",setCodigoPostalError,setErrorState);
+    console.log(errorState);
   }
 
   return (
@@ -93,13 +77,10 @@ export const ContactDataScreen = () => {
       <View style={{ marginLeft: 15, marginRight: 15 }}>
         <SectionTitle>Datos de facturacion</SectionTitle>
         <DropdownList data={paises} />
-        <Input placeholder="E-mail" error={emailError} 
-        onChangeText={(e) => handleValue(setEmail,e,setEmailError)}/>
-        {emailError && <Error>{emailError}</Error>}
-        <Input placeholder="Nombre" error={nombreError}
+        <Input placeholder="Nombre" error={nombreError} value={nombre}
         onChangeText={(e) => handleValue(setNombre,e,setNombreError)}/>
         {nombreError && <Error>{nombreError}</Error>}
-        <Input placeholder="Apellido" error={apellidoError}
+        <Input placeholder="Apellido" error={apellidoError} value={apellido}
         onChangeText={(e) => handleValue(setApellido,e,setApellidoError)}/>
         {apellidoError && <Error>{apellidoError}</Error>}
         <Input placeholder="Telefono" keyboardType='numeric' error={telefonoError} maxLength={10}
@@ -130,7 +111,7 @@ export const ContactDataScreen = () => {
         <Input placeholder="Calle" error={calleError}
         onChangeText={(e) => handleValue(setCalle,e,setCalleError)}/>
         {calleError && <Error>{calleError}</Error>}
-        <Input placeholder="Numero" error={numeroCalleError}
+        <Input placeholder="Numero" error={numeroCalleError} keyboardType='numeric'
         onChangeText={(e) => handleValue(setNumeroCalle,e,setNumeroCalleError)}/>
         {numeroCalleError && <Error>{numeroCalleError}</Error>}
         <Input placeholder="Departamento (Opcional)" 
@@ -140,13 +121,13 @@ export const ContactDataScreen = () => {
         <Input placeholder="Ciudad" error={ciudadError}
         onChangeText={(c) => handleValue(setCiudad,c,setCiudadError)}/>
         {ciudadError && <Error>{ciudadError}</Error>}
-        <Input placeholder="Codigo Postal" error={codigoPostalError}
+        <Input placeholder="Codigo Postal" error={codigoPostalError} keyboardType='numeric'
         onChangeText={(c) => handleValue(setCodigoPostal,c,setCodigoPostalError)}/>
         {codigoPostalError && <Error>{codigoPostalError}</Error>}
         </View>
        </View>
-      <Button title="continuar" action="validateForm" cartHandler={formHandler}/>
     </ScrollView>
+    <Button title="continuar" action="validateForm" cartHandler={formHandler}/>
     </>
   );
 };

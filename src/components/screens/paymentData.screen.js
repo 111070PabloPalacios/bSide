@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {View, Text, ScrollView} from "react-native";
+import { useDispatch } from "react-redux";
+import {cartActions} from "../../store/cartSlice";
 import { GoBackHeader } from "../goBack/go-back.component";
 import { DropdownList } from "../dropdownList/dropdownlist.component";
 import { useNavigation } from "@react-navigation/native";
@@ -8,6 +10,7 @@ import { Button } from "../mainButton/button.component";
 import styled from "styled-components/native";
 
 export const PaymentDataScreen = () => {
+    const dispatch = useDispatch();
     const [errorState, setErrorState] = useState((number) => ({errorState: number}));
     const [numeroTarjetaError,setNumeroTarjetaError] = useState(null);
     const [titularTarjetaError,setTitularTarjetaError] = useState(null);
@@ -25,7 +28,10 @@ export const PaymentDataScreen = () => {
     const navigation = useNavigation();
 
     useEffect(() => {
-        errorState === 0 && navigation.navigate("OrderMade");
+        if(errorState === 0){
+            navigation.navigate("OrderMade")
+            dispatch(cartActions.emptyCart());
+        };
     },[errorState]);
 
     const dateHandler = (dateSet,text,setError) => {
@@ -41,18 +47,19 @@ export const PaymentDataScreen = () => {
 
     const formHandler = () => {
         setErrorState(0);
-        validateForm(numeroTarjeta, "nombre",setNumeroTarjetaError,setErrorState);
+        validateForm(numeroTarjeta, "numeroTarjeta",setNumeroTarjetaError,setErrorState);
         validateForm(titularTarjeta, "nombre",setTitularTarjetaError,setErrorState);
-        validateForm(fechaVencimiento, "nombre",setFechaVencimientoError,setErrorState);
+        validateForm(fechaVencimiento, "fechaVencimiento",setFechaVencimientoError,setErrorState);
         validateForm(cvv, "nombre",setCvvError,setErrorState);
-        validateForm(numeroDocumento, "nombre",setNumeroDocumentoError,setErrorState);
+        validateForm(numeroDocumento, "numeroDocumento",setNumeroDocumentoError,setErrorState);
     }
 
     return(
         <>
         <GoBackHeader/>
         <ScrollView style={{flex: 1,marginLeft: 15, marginRight: 15}}>
-        <Input placeholder="Numero de tarjeta" keyboardType='numeric' error={numeroTarjetaError}
+        <Input placeholder="Numero de tarjeta" keyboardType='numeric'
+        maxLength={16} error={numeroTarjetaError}
         onChangeText={(e) => handleValue(setNumeroTarjeta, e,setNumeroTarjetaError)}/>
         {numeroTarjetaError && <Error>{numeroTarjetaError}</Error>}
         <Input placeholder="Titular de la tarjeta" error={titularTarjetaError}
@@ -75,7 +82,7 @@ export const PaymentDataScreen = () => {
         </View>
         <DropdownList data={data}/>
         <Input error={numeroDocumentoError} 
-        placeholder="Documento del titular" keyboardType='numeric'
+        placeholder="Documento del titular" keyboardType='numeric' maxLength={10}
         onChangeText={(e) => handleValue(setNumeroDocumento, e,setNumeroDocumentoError)}/>
         {numeroDocumentoError && <Error>{numeroDocumentoError}</Error>}
         </ScrollView>

@@ -7,24 +7,13 @@ import DropDownPicker from "react-native-dropdown-picker";
 export const DropdownList = ({data}) => {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
-    const [items, setItems] = useState([
-      {label: 'Apple', value: 'apple'},
-      {label: 'Banana', value: 'banana'},
-      {label: 'Banana', value: 'banana'},
-      {label: 'Banana', value: 'banana'},
-      {label: 'Banana', value: 'banana'},
-      {label: 'Banana', value: 'banana'},
-      {label: 'Banana', value: 'banana'},
-      {label: 'Banana', value: 'banana'},
-      {label: 'Banana', value: 'banana'},
-      {label: 'Banana', value: 'banana'},
-    ]);
+    const [items, setItems] = useState(data);
   
     return (
       <DropDownPicker
         open={open}
         value={value}
-        items={data}
+        items={items}
         setOpen={setOpen}
         setValue={setValue}
         setItems={setItems}

@@ -20,7 +20,17 @@ export const errores = [
     {errorLabel: 'ciudad',
     error: 'Se debe ingresar el nombre de la ciudad'},
     {errorLabel: 'codigo',
-    error: 'Se debe ingresar el codigo postal'},]
+    error: 'Se debe ingresar el codigo postal'},
+    {errorLabel: 'numeroTarjeta',
+    error: 'Se debe ingresar el numero de tarjeta'},
+    {errorLabel: 'fechaVencimiento',
+    error: 'Se debe ingresar fec. de vencimiento'},
+    {errorLabel: 'numeroDocumento',
+    error: 'Se debe ingresar el numero de documento'},
+    {errorLabel: 'password',
+    error: 'Se debe ingresar una contraseña'},
+    {errorLabel: 'password',
+    error: 'Las contraseñas tienen que coincidir'},]
 
 export const validateForm = (object, errorname,setError, errorState) => {
     if(object.length === 0){

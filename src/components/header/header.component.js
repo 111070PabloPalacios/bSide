@@ -14,9 +14,10 @@ const IMAGE_URL =
   "https://d3ugyf2ht6aenh.cloudfront.net/stores/019/792/themes/common/logo-653708850-1564683786-809f7e9e9f9b7cc192aebf84830e1bed1564683787-480-0.png?0";
 
 export const Header = () => {
+  const navigation = useNavigation();
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
   const dispatch = useDispatch();
   const cartAmount = useSelector(item => item.cart.cartItems)
 
@@ -27,13 +28,22 @@ export const Header = () => {
     navigation.navigate("SearchResult");
   }
 
+  const drawerHandler = () => {
+    console.log('Open Drawer');
+    navigation.navigate("home");
+    //DrawerActions.toggleDrawer();
+    navigation.dispatch(DrawerActions.toggleDrawer());
+  }
+
   return (
     <Wrapper>
-      <DrawerWrapper onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
+      <DrawerWrapper onPress={() => drawerHandler()}>
         <Ionicons name="menu" size={30} color="#8cc63e"/>
       </DrawerWrapper>
       <SearchBarWrapper>
-        <Searchbar style={{width: 250, flexDirection: 'row-reverse'}} 
+        <Searchbar 
+        style={{width: 250, flexDirection: 'row-reverse',
+        marginTop:10}} 
         onChangeText={(t) => setQuery(t)}
         value={query}
         placeholder="Ingrese texto"
@@ -57,13 +67,13 @@ const DrawerWrapper = styled(TouchableOpacity)`
 
 const SearchBarWrapper = styled(View)`
   position: absolute;
-  top: 34px;
   margin-right: auto;
 `;
 
 const Wrapper = styled(View)`
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   padding-vertical: 34px;
   border-color: #ddd;
   border-bottom-width: 2px;
