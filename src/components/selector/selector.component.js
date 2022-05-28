@@ -1,10 +1,9 @@
-import React, {useEffect, useState, useContext}from "react";
+import React, {useEffect, useState}from "react";
 import {View, Text, TouchableOpacity} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
-import { CartContext } from "../../services/cart/cart.context";
 import { cartActions } from "../../store/cartSlice";
 
 export const Selector = ({text, array}) => {

@@ -18,10 +18,6 @@ import { useFonts as UseLightOswald, Oswald_300Light } from "@expo-google-fonts/
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-import { Header } from "./src/components/header/header.component";
-import { RemerasContextProvider } from "./src/services/remeras/remeras.context";
-import { CartContextProvider } from "./src/services/cart/cart.context";
-import { HomeScreen } from "./src/components/screens/home.screen";
 import { RemerasScreen } from "./src/features/remeras/remeras.screen";
 import { OptionsScreen } from "./src/components/screens/options.screen";
 import { CartScreen } from "./src/features/cart/cart.screen";
@@ -76,8 +72,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <Provider store={store}>
-      <CartContextProvider>
-      <RemerasContextProvider>
           <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="home" component={DrawerNavigation}/>
             <Stack.Screen name="RemerasScreen" component={RemerasScreen}/>
@@ -88,8 +82,6 @@ export default function App() {
             <Stack.Screen name="OrderMade" component={OrderMadeScreen}/>
             <Stack.Screen name="RegistroExitoso" component={RegistroExitosoScreen}/>
           </Stack.Navigator>
-        </RemerasContextProvider>
-      </CartContextProvider>
       </Provider>
     </NavigationContainer>
   );

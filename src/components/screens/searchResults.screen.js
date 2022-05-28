@@ -1,14 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { View, Text, FlatList } from "react-native";
 import { Header } from "../header/header.component";
 import { useNavigation } from "@react-navigation/native";
-import { RemerasContext } from "../../services/remeras/remeras.context";
 import { ItemCard } from "../card/card.component";
 
 export const SearchResultScreen = ({ param }) => {
   const navigation = useNavigation();
-  //const { searchResults } = useContext(RemerasContext);
   const searchData = useSelector((state) => state.remeras.searchResults);
 
   console.log(searchData);

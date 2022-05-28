@@ -1,12 +1,10 @@
-import React, {useContext} from "react";
+import React from "react";
 import {View, Text, TouchableOpacity} from "react-native";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { CartContext } from "../../services/cart/cart.context";
 import styled from "styled-components/native";
 
 export const Button = ({cartHandler,action, title, goTo}) => {
-    const {productList, arrayHandler, updateProduct} = useContext(CartContext);
     const navigation = useNavigation();
     const isAuthenticated = useSelector(state => state.authentication.isAuthenticated);
 
